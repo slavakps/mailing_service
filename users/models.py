@@ -1,14 +1,27 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
-    username = None
+    """
+    Кастомная модель пользователя.
+    """
+    email = models.EmailField(_('email address'), unique=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
 
-    email = models.EmailField(unique=True)
-    avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', ]
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    def __str__(self):
+        return self.email
+
+
+# class Manager(AbstractUser):
+#     """Модель менеджера.
+#     Просмотр всех клиентов и рассылок.
+#     Просмотр списка пользователей сервиса.
+#     Блокировка пользователей сервиса.
+#     Отключение рассылок."""
+

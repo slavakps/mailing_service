@@ -1,0 +1,15 @@
+<h1>Мои клиенты</h1>
+<ul>
+ {% for client in clients %}
+    <li>
+        Email: {{ client.email }}<br>
+        ФИО: {{ client.FIO }}<br>
+        Комментарий: {{ client.comment }}<br>
+
+        {% if client.owner == request.user %}
+            <a href="{% url 'client_update' client.pk %}">Редактировать</a>
+            <a href="{% url 'client_delete' client.pk %}">Удалить</a>
+        {% endif %}
+    </li>
+ {% endfor %}
+</ul>

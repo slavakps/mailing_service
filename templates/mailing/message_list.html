@@ -1,0 +1,15 @@
+<h1>Список сообщений</h1>
+<ul>
+ {% for message in messages %}
+    <li>
+        {{ message.title }}<br>
+        {{ message.body }}<br>
+
+        {% if message.owner == request.user %}
+            <a href="{% url 'message_detail' message.pk %}">Просмотр</a>
+            <a href="{% url 'message_update' message.pk %}">Редактировать</a>
+            <a href="{% url 'message_delete' message.pk %}">Удалить</a>
+        {% endif %}
+    </li>
+ {% endfor %}
+</ul>

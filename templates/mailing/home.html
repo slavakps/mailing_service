@@ -1,0 +1,14 @@
+<h1>Статистика рассылок</h1>
+
+<p>Общее количество рассылок: {{ all_mailings_count }}</p>
+<p>Активные рассылки: {{ active_mailings_count }}</p>
+<p>Уникальные клиенты: {{ unique_clients_count }}</p>
+
+<hr>
+
+<h2>Переходы к разделам</h2>
+<ul>
+    <li><a href="{% url 'mailing_list' %}">Мои рассылки</a></li>
+    <li><a href="{% url 'message_list' %}">Мои сообщения</a></li>
+    <li><a href="{% url 'client_list' %}">Мои клиенты</a></li>
+</ul>
