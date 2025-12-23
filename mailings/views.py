@@ -1,12 +1,20 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from django.views.generic import (ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView)
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    TemplateView,
+    UpdateView,
+)
+
 from .models import Client, Mailing, Message
 
 
-@method_decorator(cache_page(60), name='dispatch')
+@method_decorator(cache_page(60), name="dispatch")
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = "mailing/client_list.html"
@@ -78,7 +86,7 @@ class MailingDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-@method_decorator(cache_page(60), name='dispatch')
+@method_decorator(cache_page(60), name="dispatch")
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = "mailing/mailing_list.html"
@@ -88,7 +96,9 @@ class MailingListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         if self.request.user.groups.filter(name="Менеджеры").exists():
             return Mailing.objects.all().order_by("-start_datetime")
-        return Mailing.objects.filter(owner=self.request.user).order_by("-start_datetime")
+        return Mailing.objects.filter(owner=self.request.user).order_by(
+            "-start_datetime"
+        )
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
@@ -114,7 +124,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         return reverse_lazy("mailing_list")
 
 
-@method_decorator(cache_page(60), name='dispatch')
+@method_decorator(cache_page(60), name="dispatch")
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = "mailing/message_list.html"
@@ -170,21 +180,19 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         return reverse_lazy("message_list")
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "mailing/home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        # обновляем статусы
         for mailing in Mailing.objects.filter(owner=user):
             mailing.update_status()
 
         context["all_mailings_count"] = Mailing.objects.filter(owner=user).count()
         context["active_mailings_count"] = Mailing.objects.filter(
-            owner=user,
-            status="started"
+            owner=user, status="started"
         ).count()
         context["unique_clients_count"] = Client.objects.filter(owner=user).count()
 

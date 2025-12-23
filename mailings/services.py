@@ -1,6 +1,8 @@
 from django.core.mail import send_mail
 from django.utils import timezone
-from .models import Mailing, Attempt
+
+from .models import Attempt, Mailing
+
 
 def send_mailing(mailing: Mailing):
     mailing.update_status()
@@ -20,12 +22,12 @@ def send_mailing(mailing: Mailing):
                 mailing=mailing,
                 status="ok",
                 attempt_datetime=timezone.now(),
-                server_response="Email отправлен успешно"
+                server_response="Email отправлен успешно",
             )
         except Exception as e:
             Attempt.objects.create(
                 mailing=mailing,
                 status="error",
                 attempt_datetime=timezone.now(),
-                server_response=str(e)
+                server_response=str(e),
             )
