@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Список сообщений</h1>
 <ul>
  {% for message in messages %}
@@ -11,5 +15,12 @@
             <a href="{% url 'message_delete' message.pk %}">Удалить</a>
         {% endif %}
     </li>
+
+ {% empty %}
+    <p class="text-muted">У вас пока нет сообщений.</p>
+    <a href="{% url 'message_create' %}" class="btn btn-primary">
+        Создать сообщение
+    </a>
  {% endfor %}
 </ul>
+{% endblock %}

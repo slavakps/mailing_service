@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Удалить клиента {{ object.email }}?</h1>
 
 <form method="post">
@@ -5,3 +9,4 @@
     <button type="submit">Удалить</button>
     <a href="{% url 'client_list' %}">Отмена</a>
 </form>
+{% endblock %}

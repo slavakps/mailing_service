@@ -2,11 +2,14 @@
 
 {% block content %}
 
-<h1>Редактировать рассылку</h1>
+<h1>Создать сообщение</h1>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
     <button type="submit">Сохранить</button>
 </form>
+
+<a href="{% url 'message_list' %}">← Назад к списку</a>
 {% endblock %}

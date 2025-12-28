@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>{{ object.title }}</h1>
 
 <p>{{ object.body }}</p>
@@ -7,3 +11,4 @@
 <a href="{% url 'message_update' object.pk %}">Редактировать</a>
 <a href="{% url 'message_delete' object.pk %}">Удалить</a>
 <a href="{% url 'message_list' %}">Назад к списку</a>
+{% endblock %}

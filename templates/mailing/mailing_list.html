@@ -1,15 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
 <h1>Мои рассылки</h1>
 <ul>
  {% for mailing in mailings %}
     <li>
-        {{ mailing.start_datetime }} – {{ mailing.end_datetime }} ({{ mailing.status }})<br>
-        Сообщение: {{ mailing.message.title }}<br>
+        <div>{{ mailing.start_datetime }} – {{ mailing.end_datetime }}</div>
+        <div>Статус: {{ mailing.status }}</div>
+        <div>Сообщение: {{ mailing.message.title }}</div>
+
+        <p><strong>Получатели:</strong>
+        {% for client in mailing.recipients.all %}
+            {{ client.email }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            нет получателей
+        {% endfor %}
+        </p>
 
         {% if mailing.owner == request.user %}
-            <a href="{% url 'mailing_detail' mailing.pk %}">Просмотр</a>
             <a href="{% url 'mailing_update' mailing.pk %}">Редактировать</a>
             <a href="{% url 'mailing_delete' mailing.pk %}">Удалить</a>
         {% endif %}
     </li>
+ {% empty %}
+    <p>У вас пока нет рассылок.</p>
+    <a href="{% url 'mailing_create' %}">Создать рассылку</a>
  {% endfor %}
 </ul>
+{% endblock %}

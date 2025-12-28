@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>Редактировать клиента</h1>
 
 <form method="post">
@@ -5,3 +9,4 @@
     {{ form.as_p }}
     <button type="submit">Сохранить изменения</button>
 </form>
+{% endblock %}

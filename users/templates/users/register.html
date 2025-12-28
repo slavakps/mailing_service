@@ -1,6 +1,19 @@
-<h1>Регистрация</h1>
-<form method="post">
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-3">Регистрация</h1>
+
+<form method="post" class="card p-3 shadow-sm">
     {% csrf_token %}
+
     {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
+
+    <button type="submit" class="btn btn-success">
+        Зарегистрироваться
+    </button>
+
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">
+        Уже есть аккаунт? Войти
+    </a>
 </form>
+{% endblock %}

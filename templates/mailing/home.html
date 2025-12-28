@@ -1,3 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
 <h1>Статистика рассылок</h1>
 
 <p>Общее количество рассылок: {{ all_mailings_count }}</p>
@@ -12,3 +18,16 @@
     <li><a href="{% url 'message_list' %}">Мои сообщения</a></li>
     <li><a href="{% url 'client_list' %}">Мои клиенты</a></li>
 </ul>
+
+{% else %}
+
+<h1>Добро пожаловать в сервис рассылок</h1>
+
+<p>Чтобы увидеть статистику и управлять рассылками — авторизуйтесь.</p>
+
+<a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+<a href="{% url 'register' %}" class="btn btn-outline-secondary">Зарегистрироваться</a>
+
+{% endif %}
+
+{% endblock %}
