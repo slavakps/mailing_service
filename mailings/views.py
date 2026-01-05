@@ -1,5 +1,8 @@
 from django import forms
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -11,8 +14,8 @@ from django.views.generic import (
     TemplateView,
     UpdateView,
 )
-
 from .models import Client, Mailing, Message
+from .services import send_mailing
 
 
 @method_decorator(cache_page(60), name="dispatch")
@@ -222,3 +225,11 @@ class HomeView(TemplateView):
             context["show_stats"] = False
 
         return context
+
+
+@login_required
+def mailing_send_view(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk, owner=request.user)
+    result = send_mailing(mailing)
+    messages.success(request, f"Рассылка №{mailing.id}: {result}")
+    return redirect("mailing_detail", pk=pk)

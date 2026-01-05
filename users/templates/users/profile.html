@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Профиль</h2>
+
+<div class="card mb-3">
+  <div class="card-body">
+
+    <h5 class="card-title">Текущие данные</h5>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Имя:</strong> {{ user.first_name|default:"—" }}</p>
+    <p><strong>Фамилия:</strong> {{ user.last_name|default:"—" }}</p>
+    <p><strong>Телефон:</strong> {{ user.phone_number|default:"—" }}</p>
+    <p><strong>Страна:</strong> {{ user.country|default:"—" }}</p>
+
+    {% if user.avatar %}
+        <p><strong>Аватар:</strong></p>
+        <img src="{{ user.avatar.url }}" class="img-thumbnail" style="max-width: 180px;">
+    {% endif %}
+  </div>
+</div>
+
+<h4>Редактировать профиль</h4>
+
+<form method="post" enctype="multipart/form-data" class="mt-2">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button class="btn btn-primary" type="submit">
+    Сохранить изменения
+  </button>
+</form>
+
+{% endblock %}

@@ -16,6 +16,7 @@ from .views import (
     MessageDetailView,
     MessageListView,
     MessageUpdateView,
+    mailing_send_view,
 )
 
 urlpatterns = [
@@ -45,5 +46,6 @@ urlpatterns = [
     path(
         "messages/<int:pk>/delete/", MessageDeleteView.as_view(), name="message_delete"
     ),
+    path("mailings/<int:pk>/send/", mailing_send_view, name="mailing_send"),
     path("", HomeView.as_view(), name="home"),
 ]

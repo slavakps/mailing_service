@@ -10,8 +10,9 @@
         <div>{{ mailing.start_datetime }} – {{ mailing.end_datetime }}</div>
         <div>Статус: {{ mailing.status }}</div>
         <div>Сообщение: {{ mailing.message.title }}</div>
-
+        <div>Попыток рассылки: {{ mailing.attempt_set.count }}</div>
         <p><strong>Получатели:</strong>
+
         {% for client in mailing.recipients.all %}
             {{ client.email }}{% if not forloop.last %}, {% endif %}
         {% empty %}
@@ -21,6 +22,7 @@
 
         {% if mailing.owner == request.user %}
             <a href="{% url 'mailing_update' mailing.pk %}">Редактировать</a>
+            <a href="{% url 'mailing_detail' mailing.pk %}">Просмотр</a>
             <a href="{% url 'mailing_delete' mailing.pk %}">Удалить</a>
         {% endif %}
     </li>
